@@ -2,7 +2,11 @@ package com.example.finalprojectgroup;
 
 import java.util.Arrays;
 
-//Creating abstract class Item, implements Serializable for saving the whole object in the file
+/*
+Creating abstract class Item, implements Serializable for reading and writing the whole object in the file
+Item will have 3 inheritors: DVD, VideoGame, OldMovieRecord. The key difference between them is the genre, the VideoGame does not have Genre.
+But for easier work later on, we choose the
+*/
 public abstract class Item implements java.io.Serializable {
     //Declare Item's field
     private int numberOfCopies;
@@ -74,11 +78,10 @@ public abstract class Item implements java.io.Serializable {
         if(pendingID != null){
             trackingId = pendingID;
             System.out.println(pendingID);
-            return String.format("I"+"%03d"+"-"+getYear(),trackingId);
         } else{
-            trackingId = ItemDatabase.getRecord("src/main/resources/com/example/data/item.txt").size() + 1;
-            return String.format("I"+"%03d"+"-"+getYear(),trackingId);
+            trackingId = ItemDatabase.getRecord().size() + 1;
         }
+        return String.format("I"+"%03d"+"-"+getYear(),trackingId);
     }
 
     public void setLoanType(String loanType) {

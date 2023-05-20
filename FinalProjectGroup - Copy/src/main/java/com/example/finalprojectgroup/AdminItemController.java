@@ -79,7 +79,7 @@ public class AdminItemController implements Initializable {
     private TextField stockTextField;
     @FXML
     private TextField searchTextField;
-    ArrayList<Item> list  = ItemDatabase.getRecord("src/main/resources/com/example/data/item.txt");
+    ArrayList<Item> list  = ItemDatabase.getRecord();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -120,7 +120,7 @@ public class AdminItemController implements Initializable {
         selectedItem.setNumberOfCopies(Integer.parseInt(stockTextField.getText()));
         list.add(selectedItem);
         for (Item i : list) {
-            ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt", i);
+            ItemDatabase.addRecord(i);
         }
         Comparator<Item> idComparator = Comparator.comparing(Item::getID);
         list.sort(idComparator);
@@ -170,7 +170,7 @@ public class AdminItemController implements Initializable {
         ItemDatabase.deleteAllItems();
 
         for(Item i: list ){
-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",i);
+        ItemDatabase.addRecord(i);
         }
 
         // Update the table view
@@ -201,7 +201,7 @@ public class AdminItemController implements Initializable {
             newItem = createDVD();
         }
 
-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt", newItem);
+        ItemDatabase.addRecord(newItem);
         list.add(newItem);
         updateTable();
         addNoti.setVisible(true);
@@ -269,7 +269,7 @@ public class AdminItemController implements Initializable {
     }
     public void change_page(ActionEvent e) throws IOException {
         Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminCustomer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("customer_page.fxml"));
         AnchorPane Customer_page = loader.load();
 
         Scene scene = new Scene(Customer_page);
