@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500" prefWidth="950" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.AdminItemController">
+   <children>
+      <TableView fx:id="table" layoutX="14.0" layoutY="98.0" prefHeight="277.0" prefWidth="609.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="61.33331298828125" text="ID" />
+          <TableColumn fx:id="titleColumn" prefWidth="115.00000762939453" text="title" />
+            <TableColumn fx:id="rentalTypeColumn" prefWidth="76.33332824707031" text="rental type" />
+            <TableColumn fx:id="loanTypeColumn" prefWidth="75.66665649414062" text="loan type" />
+            <TableColumn fx:id="numberOfCopiesColumn" prefWidth="48.33331298828125" text="copies" />
+            <TableColumn fx:id="rentalFeeColumn" prefWidth="81.3333740234375" text="rental fee" />
+            <TableColumn fx:id="rentalStatusColumn" prefWidth="75.0" text="status" />
+            <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+        </columns>
+      </TableView>
+      <Label layoutX="630.0" layoutY="120.0" prefHeight="21.0" prefWidth="109.0" text="Published year:" />
+      <Label layoutX="630.0" layoutY="157.0" text="Title:" />
+      <Label layoutX="630.0" layoutY="194.0" text="Rental type:" />
+      <Label layoutX="630.0" layoutY="232.0" text="Loan type:" />
+      <Label layoutX="630.0" layoutY="269.0" prefHeight="21.0" prefWidth="109.0" text="Copies number:" />
+      <Label layoutX="630.0" layoutY="305.0" text="Rental fee:" />
+      <Label layoutX="630.0" layoutY="343.0" text="Genre:" />
+      <TextField fx:id="titleText" layoutX="740.0" layoutY="152.0" />
+      <TextField fx:id="copiesText" layoutX="740.0" layoutY="264.0" />
+      <TextField fx:id="feeText" layoutX="740.0" layoutY="301.0" />
+      <ChoiceBox fx:id="genreBox" layoutX="740.0" layoutY="339.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="rentalTypeBox" layoutX="740.0" layoutY="189.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="loanTypeBox" layoutX="740.0" layoutY="226.0" prefWidth="150.0" />
+      <Button fx:id="addButton" layoutX="670.0" layoutY="381.0" mnemonicParsing="false" onAction="#add" text="ADD" />
+      <Button fx:id="removeButton" layoutX="739.0" layoutY="381.0" mnemonicParsing="false" onAction="#delete" text="REMOVE" />
+      <TextField fx:id="yearText" layoutX="740.0" layoutY="115.0" />
+      <Label alignment="CENTER" layoutX="17.0" layoutY="70.0" prefHeight="17.0" prefWidth="603.0" text="AVAILABLE ITEMS IN THE STORE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="658.0" layoutY="70.0" prefHeight="17.0" prefWidth="242.0" text="Write Item Information here">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="834.0" layoutY="381.0" mnemonicParsing="false" onAction="#clear" text="CLEAR" />
+      <Button fx:id="exitButton" layoutX="18.0" layoutY="27.0" mnemonicParsing="false" onAction="#exit" text="EXIT" textFill="RED" />
+      <Label fx:id="addNoti" layoutX="638.0" layoutY="422.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
+      <Label fx:id="removeNoti" layoutX="698.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
+      <Label fx:id="clearNoti" layoutX="778.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
+      <Label alignment="CENTER" layoutX="489.0" layoutY="454.0" prefHeight="30.0" prefWidth="458.0" text="You are now log in as ADMIN!" textFill="#b10792">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <TextField fx:id="searchTextField" layoutX="65.0" layoutY="382.0" prefHeight="31.0" prefWidth="242.0" />
+      <Label layoutX="14.0" layoutY="387.0" prefHeight="17.0" prefWidth="57.0" text="Search:" />
+      <Button fx:id="outOfStockButton" layoutX="319.0" layoutY="382.0" mnemonicParsing="false" onAction="#setOutOfStockButton" text="show out-of-stock" />
+      <Button fx:id="resetButton" layoutX="475.0" layoutY="382.0" mnemonicParsing="false" onAction="#reset" text="reset table" />
+      <TextField fx:id="stockTextField" layoutX="14.0" layoutY="448.0" prefHeight="25.0" prefWidth="63.0" />
+      <Button fx:id="updateStockButton" layoutX="91.0" layoutY="448.0" mnemonicParsing="false" onAction="#updateStock" text="Update Stock" />
+      <Label layoutX="17.0" layoutY="410.0" prefHeight="41.0" prefWidth="176.0" text="Choosing item to update" />
+      <Label layoutX="40.0" layoutY="448.0" textFill="RED" />
+      <Button fx:id="change_pageButton" layoutX="82.0" layoutY="27.0" mnemonicParsing="false" onAction="#change_page" text="CUSTOMER" />
+      <Label alignment="CENTER" layoutX="381.0" layoutY="17.0" prefHeight="51.0" prefWidth="252.0" text="Item Page" textAlignment="CENTER">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Button fx:id="alphaButton" layoutX="319.0" layoutY="410.0" mnemonicParsing="false" onAction="#sortAlpha" prefHeight="25.0" prefWidth="113.0" text="sort A-Z" />
+   </children>
+</AnchorPane>

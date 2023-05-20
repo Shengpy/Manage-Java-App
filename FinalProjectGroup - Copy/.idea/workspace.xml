@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="thêm tính năng cho GUI">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/item.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/data/deletedItemID.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/ItemDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/ItemDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="khang &lt;s3929513@rmit.edu.vn&gt;" />
+        <option value="GarrettTran &lt;131924869+garretttran@users.noreply.github.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="25b124ad-f620-4409-857b-a330d0856ee6" />
+        <option name="url" value="https://github.com/Crystal61202/FinalProjectGroup.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Pplkq0Ybo9JeNdcNE5ssZ0oVFp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Admin/Desktop/RentalApp20.5/FinalProjectGroup - Copy/src/main/resources/com/example/data",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "two.files.diff.last.used.file": "C:/Users/Admin/Desktop/Admin/FinalProjectGroup - Copy/src/main/resources/com/example/finalprojectgroup/sample.fxml",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Admin\Desktop\RentalApp20.5\FinalProjectGroup - Copy\src\main\resources\com\example\data" />
+      <recent name="C:\Users\Admin\Desktop\RentalApp20.5\FinalProjectGroup - Copy\src\main\resources\com\example\finalprojectgroup" />
+      <recent name="C:\Users\Admin\Desktop\AdminWithoutID\FinalProjectGroup - Copy\src\main\java\com\example\finalprojectgroup" />
+      <recent name="C:\Users\khang\IdeaProjects\FinalProjectGroup - Copy\src\main\resources\com\example\finalprojectgroup" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\khang\IdeaProjects\FinalProjectGroup\src\main\resources\com\example\finalprojectgroup" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.finalprojectgroup" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="RentalApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.finalprojectgroup.RentalApp" />
+      <module name="FinalProjectGroup - Copy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.finalprojectgroup.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.RentalApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="" />
+      <created>1684162049730</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1684162049730</updated>
+      <workItem from="1684162050751" duration="80000" />
+      <workItem from="1684162293733" duration="436000" />
+      <workItem from="1684165955932" duration="1115000" />
+      <workItem from="1684210052974" duration="6830000" />
+      <workItem from="1684218240249" duration="14545000" />
+      <workItem from="1684291713971" duration="43943000" />
+      <workItem from="1684380156005" duration="84000" />
+      <workItem from="1684380485220" duration="11074000" />
+      <workItem from="1684396182675" duration="4312000" />
+      <workItem from="1684400661545" duration="12981000" />
+      <workItem from="1684418766471" duration="66000" />
+      <workItem from="1684418923804" duration="210000" />
+      <workItem from="1684419150877" duration="1671000" />
+      <workItem from="1684422558675" duration="5000" />
+      <workItem from="1684422680365" duration="12008000" />
+      <workItem from="1684514707527" duration="4669000" />
+    </task>
+    <task id="LOCAL-00001" summary="Update HelloApplication.java">
+      <created>1684166380718</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166380718</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update HelloApplication.java">
+      <created>1684166607291</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166607291</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update HelloApplication.java">
+      <created>1684166630791</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166630791</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update HelloApplication.java">
+      <created>1684166756868</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166756868</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update HelloApplication.java Khang">
+      <created>1684166883952</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166883952</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update HelloApplication.java">
+      <created>1684166926559</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684166926559</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Making class Item">
+      <created>1684223396152</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684223396152</updated>
+    </task>
+    <task id="LOCAL-00008" summary="thêm tính năng addrecord và getRecord từ file ra">
+      <created>1684306239497</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1684306239497</updated>
+    </task>
+    <task id="LOCAL-00009" summary="...">
+      <created>1684306872535</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1684306872535</updated>
+    </task>
+    <task id="LOCAL-00010" summary="có thể tạo bảng cho item từ file item.txt">
+      <created>1684318085157</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1684318085157</updated>
+    </task>
+    <task id="LOCAL-00011" summary="thêm GUI để show data, add, remove">
+      <created>1684342555246</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1684342555246</updated>
+    </task>
+    <task id="LOCAL-00012" summary="thêm tính năng remove item">
+      <created>1684394648203</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1684394648203</updated>
+    </task>
+    <task id="LOCAL-00013" summary="...">
+      <created>1684394697351</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1684394697351</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="48b52f7b-9339-4175-a23e-172e92a7c07c">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="48b52f7b-9339-4175-a23e-172e92a7c07c" value="TOOL_WINDOW" />
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update HelloApplication.java Khang" />
+    <MESSAGE value="Update HelloApplication.java" />
+    <MESSAGE value="Making class Item" />
+    <MESSAGE value="thêm tính năng addrecord và getRecord từ file ra" />
+    <MESSAGE value="có thể tạo bảng cho item từ file item.txt" />
+    <MESSAGE value="thêm GUI để show data, add, remove" />
+    <MESSAGE value="thêm tính năng remove item" />
+    <MESSAGE value="..." />
+    <MESSAGE value="thêm tính năng cho GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="thêm tính năng cho GUI" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/AdminCustomerController.java</url>
+          <line>203</line>
+          <properties class="com.example.finalprojectgroup.AdminCustomerController" method="updateTable">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

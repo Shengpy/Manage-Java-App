@@ -1,0 +1,19 @@
+Index: src/main/java/com/example/finalprojectgroup/HelloApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.finalprojectgroup;\n\nimport javafx.application.Application;\nimport javafx.fxml.FXMLLoader;\nimport javafx.scene.Scene;\nimport javafx.stage.Stage;\n\nimport java.io.IOException;\n\npublic class HelloApplication extends Application {\n    @Override\n    public void start(Stage stage) throws IOException {\n        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(\"hello-view.fxml\"));\n        Scene scene = new Scene(fxmlLoader.load(), 320, 240);\n        stage.setTitle(\"Hello!\");\n        stage.setScene(scene);\n        stage.show();\n        // Testing Khang JAVA \n    }\n\n    public static void main(String[] args) {\n        launch();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/finalprojectgroup/HelloApplication.java b/src/main/java/com/example/finalprojectgroup/HelloApplication.java
+--- a/src/main/java/com/example/finalprojectgroup/HelloApplication.java	(revision 74cd22135e36c4ce66f983805d6ad802ef36bafb)
++++ b/src/main/java/com/example/finalprojectgroup/HelloApplication.java	(date 1684166340794)
+@@ -15,7 +15,7 @@
+         stage.setTitle("Hello!");
+         stage.setScene(scene);
+         stage.show();
+-        // Testing Khang JAVA 
++        // Testing Khang
+     }
+ 
+     public static void main(String[] args) {
