@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500" prefWidth="950" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.CustomerRentalController">
+    <children>
+        <TableView fx:id="table" layoutX="4.0" layoutY="98.0" prefHeight="276.0" prefWidth="619.0">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="74.33332824707031" text="ID" />
+                <TableColumn fx:id="titleColumn" prefWidth="130.0" text="title" />
+                <TableColumn fx:id="rentalTypeColumn" prefWidth="104.0" text="rental type" />
+                <TableColumn fx:id="loanTypeColumn" prefWidth="67.66665649414062" text="loan type" />
+                <TableColumn fx:id="numberOfCopiesColumn" prefWidth="46.6666259765625" text="copies" />
+                <TableColumn fx:id="rentalFeeColumn" prefWidth="65.3333740234375" text="rental fee" />
+                <TableColumn fx:id="rentalStatusColumn" prefWidth="61.0" text="status" />
+                <TableColumn fx:id="genreColumn" prefWidth="65.33331298828125" text="Genre" />
+            </columns>
+        </TableView>
+        <Label alignment="CENTER" layoutX="17.0" layoutY="70.0" prefHeight="17.0" prefWidth="603.0" text="AVAILABLE ITEMS IN THE STORE">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Label>
+        <Button fx:id="exitButton" layoutX="18.0" layoutY="27.0" mnemonicParsing="false" onAction="#exit" text="EXIT" textFill="RED" />
+        <Label fx:id="addNoti" layoutX="638.0" layoutY="422.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
+        <Label fx:id="removeNoti" layoutX="698.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
+        <Label fx:id="clearNoti" layoutX="778.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
+        <Label alignment="CENTER" layoutX="-49.0" layoutY="442.0" prefHeight="30.0" prefWidth="458.0" text="You are now log in as CUSTOMER!" textFill="#b10792">
+            <font>
+                <Font size="20.0" />
+            </font></Label>
+        <TextField fx:id="searchTextField" layoutX="65.0" layoutY="382.0" prefHeight="31.0" prefWidth="242.0" />
+        <Label layoutX="14.0" layoutY="387.0" prefHeight="17.0" prefWidth="57.0" text="Search:" />
+        <Button fx:id="resetButton" layoutX="439.0" layoutY="385.0" mnemonicParsing="false" onAction="#reset" text="reset table" />
+        <Label layoutX="40.0" layoutY="448.0" textFill="RED" />
+        <Button fx:id="change_pageButton" layoutX="518.0" layoutY="385.0" mnemonicParsing="false" text="ACCOUNT INFO" />
+        <Label alignment="CENTER" layoutX="289.0" layoutY="14.0" prefHeight="51.0" prefWidth="371.0" text="Customer Rental Page" textAlignment="CENTER">
+            <font>
+                <Font size="35.0" />
+            </font>
+        </Label>
+        <Button fx:id="alphaButton" layoutX="319.0" layoutY="385.0" mnemonicParsing="false" onAction="#sortAlpha" prefHeight="25.0" prefWidth="113.0" text="sort A-Z" />
+      <Button fx:id="returnButton" layoutX="879.0" layoutY="381.0" mnemonicParsing="false" text="RETURN" />
+      <Button fx:id="rentButton" layoutX="319.0" layoutY="418.0" mnemonicParsing="false" onAction="#rent" prefWidth="113.0" text="RENT" />
+      <TableView fx:id="rentTable" layoutX="693.0" layoutY="97.0" prefHeight="276.0" prefWidth="242.0">
+        <columns>
+          <TableColumn fx:id="rentedTitleColumn" prefWidth="167.33331298828125" text="title" />
+          <TableColumn fx:id="rentedCopiesColumn" prefWidth="74.0" text="copies" />
+        </columns>
+      </TableView>
+      <Label alignment="CENTER" layoutX="693.0" layoutY="72.0" prefHeight="17.0" prefWidth="242.0" text="RENTED ITEMS">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="stockLabel" layoutX="518.0" layoutY="432.0" text="ITEM THAT YOU CHOOSE IS CURRENTLY OUT OF STOCK!" textFill="#f60000" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="rentedLabel" layoutX="501.0" layoutY="432.0" text="ITEM RENTED SUCCESSFULLY! THANKS FOR USING OUR SERVICE" textFill="#003fff" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
