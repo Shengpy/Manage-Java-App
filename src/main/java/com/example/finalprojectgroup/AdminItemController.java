@@ -69,7 +69,7 @@ public class AdminItemController implements Initializable {
     private TextField stockTextField;
     @FXML
     private TextField searchTextField;
-    ArrayList<Item> list  = ItemDatabase.getRecord("src/main/resources/com/example/data/item.txt");
+    ArrayList<Item> list  = ItemDatabase.getRecord();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -109,9 +109,11 @@ public class AdminItemController implements Initializable {
         list.remove(selectedItem);
         selectedItem.setNumberOfCopies(Integer.parseInt(stockTextField.getText()));
         list.add(selectedItem);
+        ItemDatabase.deleteAllItems();
         for (Item i : list) {
-            ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt", i);
+            ItemDatabase.addRecord(i);
         }
+        System.out.println("STOCK CHANGED");
         Comparator<Item> idComparator = Comparator.comparing(Item::getID);
         list.sort(idComparator);
         table.setItems(FXCollections.observableArrayList(list));
@@ -160,7 +162,7 @@ public class AdminItemController implements Initializable {
         ItemDatabase.deleteAllItems();
 
         for(Item i: list ){
-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",i);
+        ItemDatabase.addRecord(i);
         }
 
         // Update the table view
@@ -191,7 +193,7 @@ public class AdminItemController implements Initializable {
             newItem = createDVD();
         }
 
-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt", newItem);
+        ItemDatabase.addRecord(newItem);
         list.add(newItem);
         updateTable();
         addNoti.setVisible(true);

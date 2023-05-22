@@ -2,12 +2,14 @@ package com.example.finalprojectgroup;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class ItemDatabase {
+    private static final String filePath = "src/main/resources/com/example/data/item.txt";
 
-    public static void addRecord(String filePath, Item item) {
-        ArrayList<Item> existingItems = getRecord(filePath); // Load existing items
+    public static void addRecord(Item item) {
+        ArrayList<Item> existingItems = getRecord(); // Load existing items
 
         // Add the new item to the existing items
         existingItems.add(item);
@@ -27,7 +29,7 @@ public class ItemDatabase {
     }
 
 
-    public static ArrayList<Item> getRecord(String filePath) {
+    public static ArrayList<Item> getRecord() {
         ArrayList<Item> list = new ArrayList<>();
         Set<String> itemIds = new HashSet<>();
 
@@ -54,7 +56,6 @@ public class ItemDatabase {
     }
 
     public static void deleteAllItems() {
-        String filePath = "src/main/resources/com/example/data/item.txt";
         ArrayList<Item> emptyList = new ArrayList<>();
 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -104,7 +105,7 @@ public class ItemDatabase {
             return null;
         } else {
             try {
-                return Integer.parseInt(reSaveId(idList));
+                return Integer.parseInt(Objects.requireNonNull(reSaveId(idList)));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 return null;
