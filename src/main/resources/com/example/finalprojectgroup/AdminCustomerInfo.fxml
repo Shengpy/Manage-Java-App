@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500" prefWidth="950" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.AdminCustomerInfoController">
+   <children>
+      <TableView fx:id="table" layoutX="14.0" layoutY="98.0" prefHeight="277.0" prefWidth="609.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="61.33331298828125" text="ID" />
+          <TableColumn fx:id="titleColumn" prefWidth="115.00000762939453" text="title" />
+            <TableColumn fx:id="rentalTypeColumn" prefWidth="76.33332824707031" text="rental type" />
+            <TableColumn fx:id="loanTypeColumn" prefWidth="75.66665649414062" text="loan type" />
+            <TableColumn fx:id="numberOfCopiesColumn" prefWidth="48.33331298828125" text="copies" />
+            <TableColumn fx:id="rentalFeeColumn" prefWidth="81.3333740234375" text="rental fee" />
+            <TableColumn fx:id="rentalStatusColumn" prefWidth="75.0" text="status" />
+            <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+        </columns>
+      </TableView>
+      <Label alignment="CENTER" layoutX="17.0" layoutY="70.0" prefHeight="17.0" prefWidth="603.0" text="RENTED ITEMS">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="exitButton" layoutX="18.0" layoutY="27.0" mnemonicParsing="false" onAction="#exit" text="EXIT" textFill="RED" />
+      <Label fx:id="addNoti" layoutX="638.0" layoutY="422.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
+      <Label fx:id="removeNoti" layoutX="698.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
+      <Label fx:id="clearNoti" layoutX="778.0" layoutY="410.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
+      <TextField fx:id="searchTextField" layoutX="65.0" layoutY="382.0" prefHeight="31.0" prefWidth="242.0" />
+      <Label layoutX="14.0" layoutY="387.0" prefHeight="17.0" prefWidth="57.0" text="Search:" />
+      <Button fx:id="resetButton" layoutX="475.0" layoutY="382.0" mnemonicParsing="false" onAction="#reset" text="reset table" />
+      <Button layoutX="748.0" layoutY="377.0" mnemonicParsing="false" onAction="#UpdateAcc" text="Update Acc type" />
+      <Label layoutX="638.0" layoutY="117.0" prefHeight="21.0" prefWidth="66.0" text="ID:" />
+      <Button fx:id="change_pageButton" layoutX="82.0" layoutY="27.0" mnemonicParsing="false" onAction="#change_page" text="CUSTOMER" />
+      <Label alignment="CENTER" layoutX="381.0" layoutY="17.0" prefHeight="51.0" prefWidth="252.0" text="Info Page" textAlignment="CENTER">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Button fx:id="alphaButton" layoutX="319.0" layoutY="383.0" mnemonicParsing="false" onAction="#sortAlpha" prefHeight="25.0" prefWidth="113.0" text="sort A-Z" />
+      <Label layoutX="638.0" layoutY="151.0" prefHeight="21.0" prefWidth="109.0" text="Name:" />
+      <Label layoutX="638.0" layoutY="188.0" text="Address:" />
+      <Label layoutX="638.0" layoutY="342.0" text="Account type:" />
+      <Label layoutX="638.0" layoutY="229.0" prefHeight="21.0" prefWidth="109.0" text="Phone number:" />
+      <Label layoutX="638.0" layoutY="265.0" text="Username:" />
+      <Label layoutX="638.0" layoutY="303.0" text="Password:" />
+
+      <Label fx:id="NameText" layoutX="748.0" layoutY="146.0" />
+      <Label fx:id="AddrText" layoutX="748.0" layoutY="183.0" />
+      <Label fx:id="PhoneText" layoutX="748.0" layoutY="224.0" />
+      <Label fx:id="UsernameText" layoutX="748.0" layoutY="261.0" />
+      <Label fx:id="PasswordText" layoutX="748.0" layoutY="298.0" />
+      <ChoiceBox fx:id="AccTypeBox" layoutX="748.0" layoutY="337.0" prefWidth="150.0" />
+
+      <Label alignment="CENTER" layoutX="660.0" layoutY="80.0" prefHeight="26.0" prefWidth="265.0" text="Customer Information here">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="IdText" layoutX="748.0" layoutY="117.0" prefHeight="21.0" prefWidth="187.0" />
+   </children>
+</AnchorPane>

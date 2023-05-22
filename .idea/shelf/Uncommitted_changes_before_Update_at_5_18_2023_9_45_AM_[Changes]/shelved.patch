@@ -1,0 +1,16 @@
+Index: src/main/java/com/example/finalprojectgroup/customerDatabase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/finalprojectgroup/customerDatabase.java b/src/main/java/com/example/finalprojectgroup/CustomerDatabase.java
+rename from src/main/java/com/example/finalprojectgroup/customerDatabase.java
+rename to src/main/java/com/example/finalprojectgroup/CustomerDatabase.java
+--- a/src/main/java/com/example/finalprojectgroup/customerDatabase.java	
++++ b/src/main/java/com/example/finalprojectgroup/CustomerDatabase.java	
+@@ -52,4 +52,4 @@
+     }
+ 
+     return list;
+-}
++}}

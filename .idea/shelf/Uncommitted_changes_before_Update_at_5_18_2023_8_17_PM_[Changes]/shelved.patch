@@ -1,0 +1,456 @@
+Index: src/main/java/com/example/finalprojectgroup/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.finalprojectgroup;\r\n\r\nimport javafx.beans.Observable;\r\nimport javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.event.ActionEvent;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.Initializable;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.control.cell.PropertyValueFactory;\r\n\r\nimport java.net.URL;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\nimport java.util.Comparator;\r\nimport java.util.ResourceBundle;\r\n\r\nimport com.example.finalprojectgroup.Item;\r\n\r\npublic class Controller implements Initializable {\r\n    @FXML\r\n    private TableView<Item> table;\r\n\r\n    @FXML\r\n    private TableColumn<Item, String> idColumn;\r\n    @FXML\r\n    private TableColumn<Item, String> titleColumn;\r\n    @FXML\r\n    private TableColumn<Item, String> rentalTypeColumn;\r\n    @FXML\r\n    private TableColumn<Item, String> loanTypeColumn;\r\n    @FXML\r\n    private TableColumn<Item, Integer> numberOfCopiesColumn;\r\n    @FXML\r\n    private TableColumn<Item, Double> rentalFeeColumn;\r\n    @FXML\r\n    private TableColumn<Item, String> rentalStatusColumn;\r\n    @FXML\r\n    private TableColumn<Item, String> genreColumn;\r\n    @FXML\r\n    private ChoiceBox<String> genreBox = new ChoiceBox<>();\r\n    private final String[] availableGenre = {\"Horror\", \"Drama\", \"Comedy\", \"Action\"};\r\n\r\n    @FXML\r\n    private ChoiceBox<String> rentalTypeBox = new ChoiceBox<>();\r\n    private final String[] rentalList = {\"VideoGame\",\"OldMovieRecord\",\"DVD\"};\r\n\r\n    @FXML\r\n    private ChoiceBox<String> loanTypeBox= new ChoiceBox<>();\r\n    private final String[] loanTypeList = {\"2-day loan\",\"1-week loan\"};\r\n    @FXML\r\n    private TextField yearText;\r\n    @FXML\r\n    private TextField titleText;\r\n    @FXML\r\n    private TextField copiesText;\r\n    @FXML\r\n    private TextField feeText;\r\n\r\n    ArrayList<Item> list  = ItemDatabase.getRecord(\"src/main/resources/com/example/data/item.txt\");\r\n    @Override\r\n    public void initialize(URL url, ResourceBundle resourceBundle) {\r\n        Comparator<Item> idComparator = Comparator.comparing(Item::getID);\r\n        list.sort(idComparator);\r\n        ObservableList<Item> itemList = FXCollections.observableArrayList(list);\r\n\r\n        idColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"ID\"));\r\n        titleColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"title\"));\r\n        rentalTypeColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"rentType\"));\r\n        loanTypeColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"loanType\"));\r\n        numberOfCopiesColumn.setCellValueFactory(new PropertyValueFactory<Item, Integer>(\"numberOfCopies\"));\r\n        rentalFeeColumn.setCellValueFactory(new PropertyValueFactory<Item, Double>(\"rentalFee\"));\r\n        rentalStatusColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"rentalStatus\"));\r\n        genreColumn.setCellValueFactory(new PropertyValueFactory<Item, String>(\"genre\"));\r\n\r\n        table.setItems(itemList);\r\n\r\n        genreBox.getItems().addAll(availableGenre);\r\n        rentalTypeBox.getItems().addAll(rentalList);\r\n        loanTypeBox.getItems().addAll(loanTypeList);\r\n    }\r\n\r\n    public void delete(ActionEvent e) {\r\n        // Get the selected item from the table\r\n        Item selectedItem = table.getSelectionModel().getSelectedItem();\r\n\r\n        // Remove the selected item from the table\r\n        table.getItems().remove(selectedItem);\r\n\r\n        // Update the table view\r\n        table.refresh();\r\n\r\n        // Delete the selected item from the database\r\n        list.remove(selectedItem);\r\n\r\n        ItemDatabase.deleteAllItems();\r\n\r\n        for(Item i: list){\r\n            ItemDatabase.addRecord(\"src/main/resources/com/example/data/item.txt\",i);\r\n        }\r\n    }\r\n\r\n    public void clear(ActionEvent e){\r\n        clearTextFields();\r\n    }\r\n\r\n\r\n    public void add(ActionEvent e) {\r\n        String type = rentalTypeBox.getValue();\r\n        Item newItem;\r\n\r\n        if (type.matches(\"VideoGame\")) {\r\n            newItem = createVideoGame();\r\n        } else if (type.matches(\"OldMovieRecord\")) {\r\n            newItem = createOldMovieRecord();\r\n        } else {\r\n            newItem = createDVD();\r\n        }\r\n\r\n        ItemDatabase.addRecord(\"src/main/resources/com/example/data/item.txt\", newItem);\r\n        updateTable();\r\n    }\r\n\r\n    private VideoGame createVideoGame() {\r\n        VideoGame game = new VideoGame();\r\n        setCommonItemProperties(game);\r\n        return game;\r\n    }\r\n\r\n    private OldMovieRecord createOldMovieRecord() {\r\n        OldMovieRecord movie = new OldMovieRecord();\r\n        setCommonItemProperties(movie);\r\n        movie.setGenre(genreBox.getValue());\r\n        return movie;\r\n    }\r\n\r\n    private DVD createDVD() {\r\n        DVD dvd = new DVD();\r\n        setCommonItemProperties(dvd);\r\n        dvd.setGenre(genreBox.getValue());\r\n        return dvd;\r\n    }\r\n\r\n    private void setCommonItemProperties(Item item) {\r\n        item.setRentType(rentalTypeBox.getValue());\r\n        item.setYear(Integer.parseInt(yearText.getText()));\r\n        item.setTitle(titleText.getText());\r\n        item.setLoanType(loanTypeBox.getValue());\r\n        item.setNumberOfCopies(Integer.parseInt(copiesText.getText()));\r\n        item.setRentalFee(Double.parseDouble(feeText.getText()));\r\n        item.setRentalStatus();\r\n        item.setID();\r\n    }\r\n\r\n    private void updateTable() {\r\n        ArrayList<Item> list = ItemDatabase.getRecord(\"src/main/resources/com/example/data/item.txt\");\r\n        Comparator<Item> idComparator = Comparator.comparing(Item::getID);\r\n        list.sort(idComparator);\r\n        ObservableList<Item> itemList = FXCollections.observableArrayList(list);\r\n        table.setItems(itemList);\r\n    }\r\n\r\n    private void clearTextFields() {\r\n        yearText.clear();\r\n        titleText.clear();\r\n        copiesText.clear();\r\n        feeText.clear();\r\n    }\r\n\r\n\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/finalprojectgroup/Controller.java b/src/main/java/com/example/finalprojectgroup/Controller.java
+--- a/src/main/java/com/example/finalprojectgroup/Controller.java	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ b/src/main/java/com/example/finalprojectgroup/Controller.java	(date 1684411681987)
+@@ -56,6 +56,16 @@
+     private TextField copiesText;
+     @FXML
+     private TextField feeText;
++    @FXML
++    private Label addNoti;
++    @FXML
++    private Label removeNoti;
++    @FXML
++    private Label clearNoti;
++
++    @FXML
++    private Button exitButton;
++
+ 
+     ArrayList<Item> list  = ItemDatabase.getRecord("src/main/resources/com/example/data/item.txt");
+     @Override
+@@ -80,6 +90,11 @@
+         loanTypeBox.getItems().addAll(loanTypeList);
+     }
+ 
++    public void exit(ActionEvent e){
++        System.exit(0);
++    }
++
++
+     public void delete(ActionEvent e) {
+         // Get the selected item from the table
+         Item selectedItem = table.getSelectionModel().getSelectedItem();
+@@ -98,12 +113,17 @@
+         for(Item i: list){
+             ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",i);
+         }
++        addNoti.setVisible(false);
++        removeNoti.setVisible(true);
++        clearNoti.setVisible(false);
+     }
+ 
+     public void clear(ActionEvent e){
+         clearTextFields();
++        addNoti.setVisible(false);
++        removeNoti.setVisible(false);
++        clearNoti.setVisible(true);
+     }
+-
+ 
+     public void add(ActionEvent e) {
+         String type = rentalTypeBox.getValue();
+@@ -119,6 +139,9 @@
+ 
+         ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt", newItem);
+         updateTable();
++        addNoti.setVisible(true);
++        removeNoti.setVisible(false);
++        clearNoti.setVisible(false);
+     }
+ 
+     private VideoGame createVideoGame() {
+Index: src/main/java/com/example/finalprojectgroup/Main.java
+===================================================================
+diff --git a/src/main/java/com/example/finalprojectgroup/Main.java b/src/main/java/com/example/finalprojectgroup/Main.java
+deleted file mode 100644
+--- a/src/main/java/com/example/finalprojectgroup/Main.java	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ /dev/null	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
+@@ -1,25 +0,0 @@
+-package com.example.finalprojectgroup;
+-
+-import java.util.ArrayList;
+-
+-public class Main {
+-    public static void main(String[] args){
+-
+-        // testing adding data, later we will create GUI to do it.
+-        DVD dvd1 = new DVD(2002,"Medal of Honour","Game","1-week",3,3.99,"Horror");
+-        VideoGame game1 = new VideoGame(2003,"Medal of Honour","Game","1-week",3,3.99);
+-        OldMovieRecord rc1 = new OldMovieRecord(2005,"Medal of Honour","Game","1-week",3,3.99,"Drama");
+-
+-
+-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",dvd1);
+-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",game1);
+-        ItemDatabase.addRecord("src/main/resources/com/example/data/item.txt",rc1);
+-
+-        ArrayList<Item> list = ItemDatabase.getRecord("src/main/resources/com/example/data/item.txt");
+-
+-        for (Item item : list) {
+-            System.out.println(item);
+-        }
+-
+-    }
+-}
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch
+new file mode 100644
+--- /dev/null	(date 1684377955032)
++++ b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch	(date 1684377955032)
+@@ -0,0 +1,16 @@
++Index: src/main/java/com/example/finalprojectgroup/customerDatabase.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/src/main/java/com/example/finalprojectgroup/customerDatabase.java b/src/main/java/com/example/finalprojectgroup/CustomerDatabase.java
++rename from src/main/java/com/example/finalprojectgroup/customerDatabase.java
++rename to src/main/java/com/example/finalprojectgroup/CustomerDatabase.java
++--- a/src/main/java/com/example/finalprojectgroup/customerDatabase.java	
+++++ b/src/main/java/com/example/finalprojectgroup/CustomerDatabase.java	
++@@ -52,4 +52,4 @@
++     }
++ 
++     return list;
++-}
+++}}
+Index: src/main/resources/com/example/data/item.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>¬í\u0000\u0005
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/com/example/data/item.txt b/src/main/resources/com/example/data/item.txt
+--- a/src/main/resources/com/example/data/item.txt	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ b/src/main/resources/com/example/data/item.txt	(date 1684410479743)
+@@ -1,1 +1,0 @@
+-¬í 
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch
+new file mode 100644
+--- /dev/null	(date 1684377955035)
++++ b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch	(date 1684377955035)
+@@ -0,0 +1,134 @@
++Index: src/main/java/com/example/finalprojectgroup/Main.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>package com.example.finalprojectgroup;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class Main {\r\n    public static void main(String[] args){\r\n\r\n        // testing adding data, later we will create GUI to do it.\r\n        DVD dvd1 = new DVD(2002,\"Medal of Honour\",\"Game\",\"1-week\",3,3.99,\"Horror\");\r\n        VideoGame game1 = new VideoGame(2003,\"Medal of Honour\",\"Game\",\"1-week\",3,3.99);\r\n        OldMovieRecord rc1 = new OldMovieRecord(2005,\"Medal of Honour\",\"Game\",\"1-week\",3,3.99,\"Drama\");\r\n\r\n\r\n        ItemDatabase.addRecord(\"src/main/resources/com/example/data/item.txt\",dvd1);\r\n        ItemDatabase.addRecord(\"src/main/resources/com/example/data/item.txt\",game1);\r\n        ItemDatabase.addRecord(\"src/main/resources/com/example/data/item.txt\",rc1);\r\n\r\n        ArrayList<Item> list = ItemDatabase.getRecord(\"src/main/resources/com/example/data/item.txt\");\r\n\r\n        for (Item item : list) {\r\n            System.out.println(item);\r\n        }\r\n        \r\n        \r\n        Customer customer = new Customer(\"C001\", \"Minh Dinh\", \"18 Irwin Street\", \"0421473243\", \"minhdinh\", \"123456\");\r\n        Rental rental1 = new Rental(\"I001-2001\", 1);\r\n        Rental rental2 = new Rental(\"I002-1988\", 1);\r\n\r\n        customer.addRecord(rental1);\r\n        customer.addRecord(rental2);\r\n\r\n        ArrayList<Rental> records = customer.getRecords();\r\n\r\n        for (Rental record : records) {\r\n            System.out.println(record);\r\n        }\r\n\r\n    }\r\n}\r\n
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/src/main/java/com/example/finalprojectgroup/Main.java b/src/main/java/com/example/finalprojectgroup/Main.java
++--- a/src/main/java/com/example/finalprojectgroup/Main.java	
+++++ b/src/main/java/com/example/finalprojectgroup/Main.java	
++@@ -20,20 +20,6 @@
++         for (Item item : list) {
++             System.out.println(item);
++         }
++-        
++-        
++-        Customer customer = new Customer("C001", "Minh Dinh", "18 Irwin Street", "0421473243", "minhdinh", "123456");
++-        Rental rental1 = new Rental("I001-2001", 1);
++-        Rental rental2 = new Rental("I002-1988", 1);
++ 
++-        customer.addRecord(rental1);
++-        customer.addRecord(rental2);
++-
++-        ArrayList<Rental> records = customer.getRecords();
++-
++-        for (Rental record : records) {
++-            System.out.println(record);
++-        }
++-
++     }
++ }
++Index: .idea/workspace.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0f1ebabd-5a29-4220-8f81-de52fd9f7ffe\" name=\"Changes\" comment=\"có thể tạo bảng cho item từ file item.txt\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/DVD.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/DVD.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/OldMovieRecord.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/OldMovieRecord.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/RentalApp.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/RentalApp.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/VideoGame.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/VideoGame.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/com/example/data/item.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/com/example/data/item.txt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\r\n      <list>\r\n        <option value=\"khang &lt;s3929513@rmit.edu.vn&gt;\" />\r\n        <option value=\"GarrettTran &lt;131924869+garretttran@users.noreply.github.com&gt;\" />\r\n      </list>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"25b124ad-f620-4409-857b-a330d0856ee6\" />\r\n        <option name=\"url\" value=\"https://github.com/Crystal61202/FinalProjectGroup.git\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Pplkq0Ybo9JeNdcNE5ssZ0oVFp\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/khang/IdeaProjects/GeniesVideoStore&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\khang\\IdeaProjects\\FinalProjectGroup\\src\\main\\resources\\com\\example\\finalprojectgroup\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0f1ebabd-5a29-4220-8f81-de52fd9f7ffe\" name=\"Changes\" comment=\"\" />\r\n      <created>1684162049730</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1684162049730</updated>\r\n      <workItem from=\"1684162050751\" duration=\"80000\" />\r\n      <workItem from=\"1684162293733\" duration=\"436000\" />\r\n      <workItem from=\"1684165955932\" duration=\"1115000\" />\r\n      <workItem from=\"1684210052974\" duration=\"6830000\" />\r\n      <workItem from=\"1684218240249\" duration=\"14545000\" />\r\n      <workItem from=\"1684291713971\" duration=\"38153000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166380718</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166380718</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166607291</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166607291</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166630791</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166630791</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166756868</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166756868</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Update HelloApplication.java Khang\">\r\n      <created>1684166883952</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166883952</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166926559</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166926559</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Making class Item\">\r\n      <created>1684223396152</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684223396152</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"thêm tính năng addrecord và getRecord từ file ra\">\r\n      <created>1684306239497</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684306239497</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"...\">\r\n      <created>1684306872535</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684306872535</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"có thể tạo bảng cho item từ file item.txt\">\r\n      <created>1684318085157</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684318085157</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"11\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"48b52f7b-9339-4175-a23e-172e92a7c07c\">\r\n          <value>\r\n            <State>\r\n              <option name=\"SHOW_ONLY_AFFECTED_CHANGES\" value=\"true\" />\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"HEAD\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                  <entry key=\"roots\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"$PROJECT_DIR$\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"OPEN_GENERIC_TABS\">\r\n      <map>\r\n        <entry key=\"48b52f7b-9339-4175-a23e-172e92a7c07c\" value=\"TOOL_WINDOW\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Update HelloApplication.java Khang\" />\r\n    <MESSAGE value=\"Update HelloApplication.java\" />\r\n    <MESSAGE value=\"Making class Item\" />\r\n    <MESSAGE value=\"thêm tính năng addrecord và getRecord từ file ra\" />\r\n    <MESSAGE value=\"...\" />\r\n    <MESSAGE value=\"có thể tạo bảng cho item từ file item.txt\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"có thể tạo bảng cho item từ file item.txt\" />\r\n  </component>\r\n</project>
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/.idea/workspace.xml b/.idea/workspace.xml
++--- a/.idea/workspace.xml	
+++++ b/.idea/workspace.xml	
++@@ -4,16 +4,10 @@
++     <option name="autoReloadType" value="SELECTIVE" />
++   </component>
++   <component name="ChangeListManager">
++-    <list default="true" id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="có thể tạo bảng cho item từ file item.txt">
+++    <list default="true" id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="thêm GUI để show data, add, remove">
++       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/DVD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/DVD.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Item.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/OldMovieRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/OldMovieRecord.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/RentalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/RentalApp.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/VideoGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/VideoGame.java" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" afterDir="false" />
++-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" afterDir="false" />
+++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Main.java" afterDir="false" />
+++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/customerDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/CustomerDatabase.java" afterDir="false" />
++     </list>
++     <option name="SHOW_DIALOG" value="false" />
++     <option name="HIGHLIGHT_CONFLICTS" value="true" />
++@@ -59,22 +53,22 @@
++     <option name="hideEmptyMiddlePackages" value="true" />
++     <option name="showLibraryContents" value="true" />
++   </component>
++-  <component name="PropertiesComponent">{
++-  &quot;keyToString&quot;: {
++-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++-    &quot;last_opened_file_path&quot;: &quot;C:/Users/khang/IdeaProjects/GeniesVideoStore&quot;,
++-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
++-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+++  <component name="PropertiesComponent"><![CDATA[{
+++  "keyToString": {
+++    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+++    "RunOnceActivity.OpenProjectViewOnStart": "true",
+++    "RunOnceActivity.ShowReadmeOnStart": "true",
+++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+++    "WebServerToolWindowFactoryState": "false",
+++    "last_opened_file_path": "C:/Users/khang/Downloads",
+++    "node.js.detected.package.eslint": "true",
+++    "node.js.detected.package.tslint": "true",
+++    "node.js.selected.package.eslint": "(autodetect)",
+++    "node.js.selected.package.tslint": "(autodetect)",
+++    "settings.editor.selected.configurable": "preferences.lookFeel",
+++    "vue.rearranger.settings.migration": "true"
++   }
++-}</component>
+++}]]></component>
++   <component name="RecentsManager">
++     <key name="MoveFile.RECENT_KEYS">
++       <recent name="C:\Users\khang\IdeaProjects\FinalProjectGroup\src\main\resources\com\example\finalprojectgroup" />
++@@ -93,7 +87,7 @@
++       <workItem from="1684165955932" duration="1115000" />
++       <workItem from="1684210052974" duration="6830000" />
++       <workItem from="1684218240249" duration="14545000" />
++-      <workItem from="1684291713971" duration="38153000" />
+++      <workItem from="1684291713971" duration="41755000" />
++     </task>
++     <task id="LOCAL-00001" summary="Update HelloApplication.java">
++       <created>1684166380718</created>
++@@ -165,7 +159,14 @@
++       <option name="project" value="LOCAL" />
++       <updated>1684318085157</updated>
++     </task>
++-    <option name="localTasksCounter" value="11" />
+++    <task id="LOCAL-00011" summary="thêm GUI để show data, add, remove">
+++      <created>1684342555246</created>
+++      <option name="number" value="00011" />
+++      <option name="presentableId" value="LOCAL-00011" />
+++      <option name="project" value="LOCAL" />
+++      <updated>1684342555246</updated>
+++    </task>
+++    <option name="localTasksCounter" value="12" />
++     <servers />
++   </component>
++   <component name="TypeScriptGeneratedFilesManager">
++@@ -219,6 +220,7 @@
++     <MESSAGE value="thêm tính năng addrecord và getRecord từ file ra" />
++     <MESSAGE value="..." />
++     <MESSAGE value="có thể tạo bảng cho item từ file item.txt" />
++-    <option name="LAST_COMMIT_MESSAGE" value="có thể tạo bảng cho item từ file item.txt" />
+++    <MESSAGE value="thêm GUI để show data, add, remove" />
+++    <option name="LAST_COMMIT_MESSAGE" value="thêm GUI để show data, add, remove" />
++   </component>
++ </project>
++\ No newline at end of file
+Index: src/main/resources/com/example/finalprojectgroup/sample.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.scene.control.*?>\r\n<?import javafx.scene.layout.*?>\r\n<?import javafx.scene.text.*?>\r\n\r\n<AnchorPane prefHeight=\"501.0\" prefWidth=\"947.0\" xmlns=\"http://javafx.com/javafx/17.0.2-ea\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"com.example.finalprojectgroup.Controller\">\r\n   <children>\r\n      <TableView fx:id=\"table\" layoutX=\"8.0\" layoutY=\"42.0\" prefHeight=\"277.0\" prefWidth=\"609.0\">\r\n        <columns>\r\n          <TableColumn fx:id=\"idColumn\" prefWidth=\"61.33331298828125\" text=\"ID\" />\r\n          <TableColumn fx:id=\"titleColumn\" prefWidth=\"115.00000762939453\" text=\"title\" />\r\n            <TableColumn fx:id=\"rentalTypeColumn\" prefWidth=\"76.33332824707031\" text=\"rental type\" />\r\n            <TableColumn fx:id=\"loanTypeColumn\" prefWidth=\"75.66665649414062\" text=\"loan type\" />\r\n            <TableColumn fx:id=\"numberOfCopiesColumn\" prefWidth=\"48.33331298828125\" text=\"copies\" />\r\n            <TableColumn fx:id=\"rentalFeeColumn\" prefWidth=\"81.3333740234375\" text=\"rental fee\" />\r\n            <TableColumn fx:id=\"rentalStatusColumn\" prefWidth=\"75.0\" text=\"status\" />\r\n            <TableColumn fx:id=\"genreColumn\" prefWidth=\"75.0\" text=\"Genre\" />\r\n        </columns>\r\n      </TableView>\r\n      <Label layoutX=\"658.0\" layoutY=\"47.0\" text=\"year\" />\r\n      <Label layoutX=\"658.0\" layoutY=\"87.0\" text=\"title\" />\r\n      <Label layoutX=\"658.0\" layoutY=\"124.0\" text=\"rental type\" />\r\n      <Label layoutX=\"658.0\" layoutY=\"158.0\" text=\"loan type\" />\r\n      <Label layoutX=\"658.0\" layoutY=\"193.0\" text=\"copies\" />\r\n      <Label layoutX=\"658.0\" layoutY=\"232.0\" text=\"fee\" />\r\n      <Label layoutX=\"653.0\" layoutY=\"273.0\" text=\"Genre\" />\r\n      <TextField fx:id=\"titleText\" layoutX=\"722.0\" layoutY=\"83.0\" />\r\n      <TextField fx:id=\"copiesText\" layoutX=\"722.0\" layoutY=\"189.0\" />\r\n      <TextField fx:id=\"feeText\" layoutX=\"722.0\" layoutY=\"228.0\" />\r\n      <ChoiceBox fx:id=\"genreBox\" layoutX=\"722.0\" layoutY=\"269.0\" prefWidth=\"150.0\" />\r\n      <ProgressBar fx:id=\"progressBar1\" layoutX=\"8.0\" layoutY=\"478.0\" prefWidth=\"200.0\" progress=\"0.5\" />\r\n      <ChoiceBox fx:id=\"rentalTypeBox\" layoutX=\"722.0\" layoutY=\"120.0\" prefWidth=\"150.0\" />\r\n      <ChoiceBox fx:id=\"loanTypeBox\" layoutX=\"722.0\" layoutY=\"154.0\" prefWidth=\"150.0\" />\r\n      <Button fx:id=\"addButton\" layoutX=\"662.0\" layoutY=\"310.0\" mnemonicParsing=\"false\" onAction=\"#add\" text=\"ADD\" />\r\n      <Button fx:id=\"removeButton\" layoutX=\"722.0\" layoutY=\"310.0\" mnemonicParsing=\"false\" onAction=\"#delete\" text=\"REMOVE\" />\r\n      <TextField fx:id=\"yearText\" layoutX=\"722.0\" layoutY=\"43.0\" />\r\n      <Label alignment=\"CENTER\" layoutX=\"11.0\" layoutY=\"22.0\" prefHeight=\"17.0\" prefWidth=\"603.0\" text=\"Item Available in the store\">\r\n         <font>\r\n            <Font size=\"15.0\" />\r\n         </font>\r\n      </Label>\r\n      <Label alignment=\"CENTER\" layoutX=\"650.0\" layoutY=\"14.0\" prefHeight=\"17.0\" prefWidth=\"242.0\" text=\"Write Item Information here\">\r\n         <font>\r\n            <Font size=\"15.0\" />\r\n         </font>\r\n      </Label>\r\n      <Button layoutX=\"797.0\" layoutY=\"310.0\" mnemonicParsing=\"false\" onAction=\"#clear\" text=\"CLEAR\" />\r\n   </children>\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/com/example/finalprojectgroup/sample.fxml b/src/main/resources/com/example/finalprojectgroup/sample.fxml
+--- a/src/main/resources/com/example/finalprojectgroup/sample.fxml	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ b/src/main/resources/com/example/finalprojectgroup/sample.fxml	(date 1684411681992)
+@@ -4,7 +4,7 @@
+ <?import javafx.scene.layout.*?>
+ <?import javafx.scene.text.*?>
+ 
+-<AnchorPane prefHeight="501.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.Controller">
++<AnchorPane prefHeight="500" prefWidth="950" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.Controller">
+    <children>
+       <TableView fx:id="table" layoutX="8.0" layoutY="42.0" prefHeight="277.0" prefWidth="609.0">
+         <columns>
+@@ -18,12 +18,12 @@
+             <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+         </columns>
+       </TableView>
+-      <Label layoutX="658.0" layoutY="47.0" text="year" />
++      <Label layoutX="636.0" layoutY="47.0" prefHeight="17.0" prefWidth="100.0" text="published year" />
+       <Label layoutX="658.0" layoutY="87.0" text="title" />
+       <Label layoutX="658.0" layoutY="124.0" text="rental type" />
+       <Label layoutX="658.0" layoutY="158.0" text="loan type" />
+-      <Label layoutX="658.0" layoutY="193.0" text="copies" />
+-      <Label layoutX="658.0" layoutY="232.0" text="fee" />
++      <Label layoutX="637.0" layoutY="193.0" prefHeight="17.0" prefWidth="100.0" text="copies number" />
++      <Label layoutX="658.0" layoutY="232.0" text="rental fee " />
+       <Label layoutX="653.0" layoutY="273.0" text="Genre" />
+       <TextField fx:id="titleText" layoutX="722.0" layoutY="83.0" />
+       <TextField fx:id="copiesText" layoutX="722.0" layoutY="189.0" />
+@@ -46,5 +46,12 @@
+          </font>
+       </Label>
+       <Button layoutX="797.0" layoutY="310.0" mnemonicParsing="false" onAction="#clear" text="CLEAR" />
++      <Button fx:id="exitButton" layoutX="11.0" layoutY="453.0" mnemonicParsing="false" onAction="#exit" text="EXIT" />
++      <Label fx:id="addNoti" layoutX="630.0" layoutY="351.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
++      <Label fx:id="removeNoti" layoutX="690.0" layoutY="339.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
++      <Label fx:id="clearNoti" layoutX="770.0" layoutY="339.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
++      <Button fx:id="toCustomerPage" layoutX="82.0" layoutY="453.0" mnemonicParsing="false" text="CUSTOMER" />
++      <Label layoutX="225.0" layoutY="470.0" prefHeight="17.0" prefWidth="172.0" text="You are now log in as ADMIN!" />
++      <Label layoutX="58.0" layoutY="436.0" prefHeight="17.0" prefWidth="131.0" text="move to customer page" />
+    </children>
+ </AnchorPane>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0f1ebabd-5a29-4220-8f81-de52fd9f7ffe\" name=\"Changes\" comment=\"thêm tính năng remove item\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\r\n      <list>\r\n        <option value=\"khang &lt;s3929513@rmit.edu.vn&gt;\" />\r\n        <option value=\"GarrettTran &lt;131924869+garretttran@users.noreply.github.com&gt;\" />\r\n      </list>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"25b124ad-f620-4409-857b-a330d0856ee6\" />\r\n        <option name=\"url\" value=\"https://github.com/Crystal61202/FinalProjectGroup.git\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Pplkq0Ybo9JeNdcNE5ssZ0oVFp\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/khang/Downloads&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\khang\\IdeaProjects\\FinalProjectGroup\\src\\main\\resources\\com\\example\\finalprojectgroup\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0f1ebabd-5a29-4220-8f81-de52fd9f7ffe\" name=\"Changes\" comment=\"\" />\r\n      <created>1684162049730</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1684162049730</updated>\r\n      <workItem from=\"1684162050751\" duration=\"80000\" />\r\n      <workItem from=\"1684162293733\" duration=\"436000\" />\r\n      <workItem from=\"1684165955932\" duration=\"1115000\" />\r\n      <workItem from=\"1684210052974\" duration=\"6830000\" />\r\n      <workItem from=\"1684218240249\" duration=\"14545000\" />\r\n      <workItem from=\"1684291713971\" duration=\"43943000\" />\r\n      <workItem from=\"1684380156005\" duration=\"84000\" />\r\n      <workItem from=\"1684380485220\" duration=\"10051000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166380718</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166380718</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166607291</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166607291</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166630791</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166630791</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166756868</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166756868</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Update HelloApplication.java Khang\">\r\n      <created>1684166883952</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166883952</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Update HelloApplication.java\">\r\n      <created>1684166926559</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684166926559</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Making class Item\">\r\n      <created>1684223396152</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684223396152</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"thêm tính năng addrecord và getRecord từ file ra\">\r\n      <created>1684306239497</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684306239497</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"...\">\r\n      <created>1684306872535</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684306872535</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"có thể tạo bảng cho item từ file item.txt\">\r\n      <created>1684318085157</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684318085157</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"thêm GUI để show data, add, remove\">\r\n      <created>1684342555246</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684342555246</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"thêm tính năng remove item\">\r\n      <created>1684394648203</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684394648203</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"13\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"48b52f7b-9339-4175-a23e-172e92a7c07c\">\r\n          <value>\r\n            <State>\r\n              <option name=\"SHOW_ONLY_AFFECTED_CHANGES\" value=\"true\" />\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"HEAD\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                  <entry key=\"roots\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"$PROJECT_DIR$\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"OPEN_GENERIC_TABS\">\r\n      <map>\r\n        <entry key=\"48b52f7b-9339-4175-a23e-172e92a7c07c\" value=\"TOOL_WINDOW\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Update HelloApplication.java Khang\" />\r\n    <MESSAGE value=\"Update HelloApplication.java\" />\r\n    <MESSAGE value=\"Making class Item\" />\r\n    <MESSAGE value=\"thêm tính năng addrecord và getRecord từ file ra\" />\r\n    <MESSAGE value=\"...\" />\r\n    <MESSAGE value=\"có thể tạo bảng cho item từ file item.txt\" />\r\n    <MESSAGE value=\"thêm GUI để show data, add, remove\" />\r\n    <MESSAGE value=\"thêm tính năng remove item\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"thêm tính năng remove item\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ b/.idea/workspace.xml	(date 1684415728287)
+@@ -4,7 +4,20 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="thêm tính năng remove item" />
++    <list default="true" id="0f1ebabd-5a29-4220-8f81-de52fd9f7ffe" name="Changes" comment="thêm tính năng cho GUI">
++      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/item.txt" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/data/deletedItemID.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Controller.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/ItemDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/ItemDatabase.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/finalprojectgroup/Main.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/data/item.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/finalprojectgroup/sample.fxml" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -85,7 +98,9 @@
+       <workItem from="1684218240249" duration="14545000" />
+       <workItem from="1684291713971" duration="43943000" />
+       <workItem from="1684380156005" duration="84000" />
+-      <workItem from="1684380485220" duration="10051000" />
++      <workItem from="1684380485220" duration="11074000" />
++      <workItem from="1684396182675" duration="4312000" />
++      <workItem from="1684400661545" duration="10152000" />
+     </task>
+     <task id="LOCAL-00001" summary="Update HelloApplication.java">
+       <created>1684166380718</created>
+@@ -171,7 +186,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1684394648203</updated>
+     </task>
+-    <option name="localTasksCounter" value="13" />
++    <task id="LOCAL-00013" summary="...">
++      <created>1684394697351</created>
++      <option name="number" value="00013" />
++      <option name="presentableId" value="LOCAL-00013" />
++      <option name="project" value="LOCAL" />
++      <updated>1684394697351</updated>
++    </task>
++    <option name="localTasksCounter" value="14" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -223,10 +245,11 @@
+     <MESSAGE value="Update HelloApplication.java" />
+     <MESSAGE value="Making class Item" />
+     <MESSAGE value="thêm tính năng addrecord và getRecord từ file ra" />
+-    <MESSAGE value="..." />
+     <MESSAGE value="có thể tạo bảng cho item từ file item.txt" />
+     <MESSAGE value="thêm GUI để show data, add, remove" />
+     <MESSAGE value="thêm tính năng remove item" />
+-    <option name="LAST_COMMIT_MESSAGE" value="thêm tính năng remove item" />
++    <MESSAGE value="..." />
++    <MESSAGE value="thêm tính năng cho GUI" />
++    <option name="LAST_COMMIT_MESSAGE" value="thêm tính năng cho GUI" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/com/example/finalprojectgroup/ItemDatabase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.finalprojectgroup;\r\nimport java.io.*;\r\nimport java.util.ArrayList;\r\nimport java.util.HashSet;\r\nimport java.util.Set;\r\n\r\npublic class ItemDatabase {\r\n\r\n    public static void addRecord(String filePath, Item item) {\r\n        ArrayList<Item> existingItems = getRecord(filePath); // Load existing items\r\n\r\n        // Add the new item to the existing items\r\n        existingItems.add(item);\r\n\r\n        // Remove duplicates from the list\r\n        Set<Item> uniqueItems = new HashSet<>(existingItems);\r\n        existingItems = new ArrayList<>(uniqueItems);\r\n\r\n        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {\r\n            for (Item existingItem : existingItems) {\r\n                out.writeObject(existingItem); // Write all unique items back to the file\r\n            }\r\n\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error occurred while writing to the database file: \" + e.getMessage());\r\n        }\r\n    }\r\n\r\n\r\n    public static ArrayList<Item> getRecord(String filePath) {\r\n        ArrayList<Item> list = new ArrayList<>();\r\n        Set<String> itemIds = new HashSet<>();\r\n\r\n        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath))) {\r\n            while (true) {\r\n                try {\r\n                    Item obj = (Item) in.readObject();\r\n\r\n                    if (!itemIds.contains(obj.getID())) {\r\n                        list.add(obj);\r\n                        itemIds.add(obj.getID());\r\n                    }\r\n                } catch (EOFException e) {\r\n                    break;\r\n                }\r\n            }\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error occurred while reading the database file: \" + e.getMessage());\r\n        } catch (ClassNotFoundException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n\r\n        return list;\r\n    }\r\n\r\n    public static void deleteAllItems() {\r\n        String filePath = \"src/main/resources/com/example/data/item.txt\";\r\n        ArrayList<Item> emptyList = new ArrayList<>();\r\n\r\n        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {\r\n            for (Item obj : emptyList) {\r\n                out.writeObject(obj);\r\n            }\r\n\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error occurred while deleting items from the database file: \" + e.getMessage());\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/finalprojectgroup/ItemDatabase.java b/src/main/java/com/example/finalprojectgroup/ItemDatabase.java
+--- a/src/main/java/com/example/finalprojectgroup/ItemDatabase.java	(revision 2ca5816bf2a861a0d8dcda1abe4209063b24f293)
++++ b/src/main/java/com/example/finalprojectgroup/ItemDatabase.java	(date 1684410309897)
+@@ -66,4 +66,5 @@
+             System.out.println("Error occurred while deleting items from the database file: " + e.getMessage());
+         }
+     }
++
+ }
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml
+new file mode 100644
+--- /dev/null	(date 1684400683716)
++++ b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_1.xml	(date 1684400683716)
+@@ -0,0 +1,4 @@
++<changelist name="Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1" date="1684377955035" recycled="true" deleted="true">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]1/shelved.patch" />
++  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2023 9:45 AM [Changes]" />
++</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml
+new file mode 100644
+--- /dev/null	(date 1684400683709)
++++ b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM__Changes_.xml	(date 1684400683709)
+@@ -0,0 +1,4 @@
++<changelist name="Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]" date="1684377942161" recycled="false" toDelete="true">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2023_9_45_AM_[Changes]/shelved.patch" />
++  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2023 9:45 AM [Changes]" />
++</changelist>
+\ No newline at end of file
+diff --git a/item.txt b/item.txt
+new file mode 100644
+diff --git a/src/main/resources/com/example/data/deletedItemID.txt b/src/main/resources/com/example/data/deletedItemID.txt
+new file mode 100644
