@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500" prefWidth="950" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.SignUpController">
+   <children>
+      <Label layoutX="332.0" layoutY="118.0" prefHeight="21.0" prefWidth="109.0" text="Name:" />
+      <Label layoutX="332.0" layoutY="155.0" text="Address:" />
+      <Label layoutX="332.0" layoutY="192.0" text="Account type:" />
+      <Label layoutX="332.0" layoutY="229.0" prefHeight="21.0" prefWidth="109.0" text="Phone number:" />
+      <Label layoutX="332.0" layoutY="265.0" text="Username:" />
+      <Label layoutX="332.0" layoutY="303.0" text="Password:" />
+      <TextField fx:id="NameText" layoutX="442.0" layoutY="113.0" />
+      <TextField fx:id="AddrText" layoutX="442.0" layoutY="150.0" />
+      <ChoiceBox fx:id="AccTypeBox" layoutX="442.0" layoutY="187.0" prefWidth="150.0" />
+      <TextField fx:id="PhoneText" layoutX="442.0" layoutY="224.0" />
+      <TextField fx:id="UsernameText" layoutX="442.0" layoutY="261.0" />
+      <TextField fx:id="PasswordText" layoutX="442.0" layoutY="298.0" />
+      <Button fx:id="addButton" layoutX="410.0" layoutY="341.0" mnemonicParsing="false" onAction="#add" text="SIGN UP" />
+      <Label alignment="CENTER" layoutX="333.0" layoutY="65.0" prefHeight="26.0" prefWidth="265.0" text="Write customer Information here">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button layoutX="536.0" layoutY="341.0" mnemonicParsing="false" onAction="#clear" text="CLEAR" />
+      <Label fx:id="addNoti" layoutX="340.0" layoutY="420.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
+      <Label fx:id="removeNoti" layoutX="400.0" layoutY="408.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
+      <Label fx:id="clearNoti" layoutX="480.0" layoutY="408.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
+      <Label layoutX="40.0" layoutY="448.0" textFill="RED" />
+      <Label alignment="CENTER" layoutX="340.0" layoutY="14.0" prefHeight="51.0" prefWidth="252.0" text="SIGN UP PAGE" textAlignment="CENTER">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="notiLabel" layoutX="308.0" layoutY="397.0" text="USERNAME EXISTED! PLEASE TRY OTHER NAMES" textFill="RED" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

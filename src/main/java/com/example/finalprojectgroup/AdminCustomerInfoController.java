@@ -66,8 +66,15 @@ public class AdminCustomerInfoController implements Initializable {
             filterItems(newValue); // Call the method to filter items based on the search text
         });
     }
-    public void exit(){
-        System.exit(0);
+    public void exit(ActionEvent e) throws IOException {
+        Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
+        AnchorPane root = loader.load();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Rental App");
+        stage.show();
     }
     public void setInfo(Customer cus){
         acc=cus;
@@ -95,8 +102,9 @@ public class AdminCustomerInfoController implements Initializable {
 
         table.setItems(itemList);
     }
-    public void UpdateAcc(){
+    public void UpdateAcc() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminCustomer.fxml"));
+        AnchorPane Customer_page = loader.load();
         AdminCustomerController controller = loader.getController();
         controller.UpdateAccountType(acc,AccTypeBox.getValue());
     }

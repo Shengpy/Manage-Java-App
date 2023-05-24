@@ -26,7 +26,6 @@ public class CustomerDatabase {
                 out.writeObject("VIP");
             out.writeObject(existingRecord); // Write all unique records back to the file
         }
-        System.out.println("Record added successfully.");
     } catch (IOException e) {
         System.out.println("Error occurred while writing to the database file: " + e.getMessage());
         }
@@ -104,7 +103,7 @@ public class CustomerDatabase {
             ex.printStackTrace();
         }
 
-        if (idList.isEmpty()) {
+        if (idList.isEmpty()||(idList.get(0).equals(""))) {
             return null;
         } else {
             try {

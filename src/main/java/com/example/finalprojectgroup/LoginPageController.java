@@ -52,23 +52,36 @@ public class LoginPageController {
             stage.setScene(scene);
             stage.setTitle("Rental App");
             stage.show();
-        } else {wrongPass.setVisible(true);
         }
     }
 
     public Customer check(String Username, String Password){
         for(Customer c: cusList){
-            wrongUser.setVisible(true);
-            if(c.getUsername().equals(Username)){
+            if(c.getUsername().equals(Username)) {
                 wrongUser.setVisible(false);
                 wrongPass.setVisible(true);
-                if(c.getPassword().equals(Password)){
+            }else{
+                wrongUser.setVisible(true);
+                wrongPass.setVisible(false);
+                continue;
+            }
+            if(c.getPassword().equals(Password)){
                     wrongPass.setVisible(false);
                     return c;
-                }
+                } else {return null;}
             }
-        }
         return null;
     }
+
+    public void signUp(ActionEvent e) throws IOException {
+        Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUpPage.fxml"));
+        AnchorPane Customer_page = loader.load();
+
+        Scene scene = new Scene(Customer_page);
+        stage.setScene(scene);
+        stage.show();
     }
+    }
+
 

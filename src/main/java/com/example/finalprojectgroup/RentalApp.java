@@ -12,7 +12,7 @@ public class RentalApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
         AnchorPane root = loader.load();
 
         Scene scene = new Scene(root);

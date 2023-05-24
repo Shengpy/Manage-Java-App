@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
 import javafx.scene.layout.AnchorPane;
 
 public class CustomerRentalController implements Initializable {
+    private static final int MAXIMUM = 0;
+    private static final int loanViolate = -1;
 
     @FXML
     private TableView<Item> rentTable;
@@ -54,11 +56,17 @@ public class CustomerRentalController implements Initializable {
     @FXML
     private Button alphaButton;
     @FXML
+    private Button infoButton;
+    @FXML
     private TextField searchTextField;
     @FXML
-    private Label stockLabel;
+    private Label notificationLabel;
     @FXML
-    private Label rentedLabel;
+    private Label rwLabel;
+    @FXML
+    private Label freeRentalLabel;
+    @FXML
+    private Label freeLabel;
     private Customer myAccount;
     private ArrayList<Item> rentedItem = new ArrayList<>();
     ArrayList<Customer> customersList;
@@ -70,6 +78,8 @@ public class CustomerRentalController implements Initializable {
         ObservableList<Item> rentedItemList =  FXCollections.observableArrayList(rentedItem);
         rentTable.setItems(rentedItemList);
         rentTable.refresh();
+        rwLabel.setText("Reward Points:"+myAccount.rewardPoints);
+        freeRentalLabel.setText("Free Rental:"+myAccount.rent_free);
     }
     ArrayList<Item> list  = ItemDatabase.getRecord();
 
@@ -101,10 +111,27 @@ public class CustomerRentalController implements Initializable {
         });
     }
 
-    public void exit(ActionEvent e){
-        System.exit(0);
+    public void exit(ActionEvent e) throws IOException {
+        Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
+        AnchorPane root = loader.load();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Rental App");
+        stage.show();
     }
 
+    public void showInfo(ActionEvent e)throws IOException{
+        Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerInfo.fxml"));
+        AnchorPane Customer_page = loader.load();
+        CustomerInfoController controller = loader.getController();
+        controller.setInfo(myAccount,customersList);
+        Scene scene = new Scene(Customer_page);
+        stage.setScene(scene);
+        stage.show();
+    }
     public void sortAlpha(ActionEvent e) {
         ObservableList<Item> alphaList = table.getItems();
         Comparator<Item> alphaComparator = Comparator.comparing(Item::getTitle, String.CASE_INSENSITIVE_ORDER);
@@ -112,15 +139,11 @@ public class CustomerRentalController implements Initializable {
         table.setItems(FXCollections.observableArrayList(alphaList));
         table.refresh();
     }
-
-
     public void reset(ActionEvent e){
         Comparator<Item> idComparator = Comparator.comparing(Item::getID);
         list.sort(idComparator);
         table.setItems(FXCollections.observableArrayList(list));
     }
-
-
     private void filterItems(String searchText) {
         ObservableList<Item> filteredItems = FXCollections.observableArrayList();
 
@@ -133,16 +156,15 @@ public class CustomerRentalController implements Initializable {
         filteredItems.sort(idComparator);
         table.setItems(filteredItems);
     }
-
     public void rent(ActionEvent e) {
+        freeLabel.setVisible(false);
         Item selectedItem = table.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             // No item is selected
             return;
         }
-        if (selectedItem.getNumberOfCopies()<=0){
-            rentedLabel.setVisible(false);
-            stockLabel.setVisible(true);
+        if (selectedItem.getNumberOfCopies() <= 0){
+            notificationLabel.setText("ITEM IS CURRENTLY OUT OF STOCK!");
             return;
         }
         Item copySelectedItem = null;
@@ -155,15 +177,27 @@ public class CustomerRentalController implements Initializable {
         copySelectedItem = new Item.DVD(selectedItem);
         }
 
-
         list.remove(selectedItem);
 
         customersList.remove(myAccount);
 
         copySelectedItem.setNumberOfCopies(1);
 
-        myAccount.addRental(copySelectedItem);
-
+        int check = myAccount.addRental(copySelectedItem);
+        if(check == MAXIMUM){
+            notificationLabel.setText("YOU EXCEEDED THE MAXIMUM RENTAL");
+            list.add(selectedItem);
+            return;
+        }
+        if (check == loanViolate){
+            notificationLabel.setText("YOU CAN NOT RENT 2-DAY ITEM TYPE(GUEST)");
+            list.add(selectedItem);
+            return;
+        }
+        if(myAccount.rent_free >= 1 && myAccount.rewardPoints == 10 ){
+            myAccount.rent_free = myAccount.rent_free-1;
+            freeLabel.setVisible(true);
+        }
         customersList.add(myAccount);
 
         selectedItem.setNumberOfCopies(selectedItem.getNumberOfCopies()-1);
@@ -185,17 +219,63 @@ public class CustomerRentalController implements Initializable {
             CustomerDatabase.addRecord("src/main/resources/com/example/data/customer.txt",c);
         }
 
+        rentTable.setItems(FXCollections.observableArrayList(rentedItem));// Refresh the rentTable
+        table.setItems(FXCollections.observableArrayList(list));
+        rentTable.refresh();
+        table.refresh();
+        notificationLabel.setText("ITEM RENTED SUCCESSFULLY!");
+        rwLabel.setText("Reward Points:"+myAccount.rewardPoints);
+        freeRentalLabel.setText("Free Rental:"+myAccount.rent_free);
+    }
+    public void returnItem(ActionEvent event){
+        Item rentSelectedItem = rentTable.getSelectionModel().getSelectedItem();
+        if (rentSelectedItem == null) {
+            // No item is selected
+            return;
+        }
+        customersList.remove(myAccount);
+        int check = myAccount.removeRental(rentSelectedItem);
+        if (check == 1){
+            customersList.add(myAccount);
+        } else if(check == 2){
+            if(myAccount.getType().equals("Guest")){
+                myAccount = new RegularAccount(myAccount);
+                notificationLabel.setText("Upgraded from Guest to Regular!");
+            } else if(myAccount.getType().equals("Regular")){
+                myAccount = new VIPAccount(myAccount);
+                notificationLabel.setText("Congrats VIP! start stacking your points!");
+            }
+            customersList.add(myAccount);
+        } else{
+            return;
+        }
+        rentedItem = myAccount.getRentals();
+
+        for(Item i:list){
+            if(i.getID().equals(rentSelectedItem.getID())){
+                i.setNumberOfCopies(i.getNumberOfCopies()+1);
+            }
+        }
+
+        ItemDatabase.deleteAllItems();
+        for(Item i: list){
+            ItemDatabase.addRecord(i);
+        }
+
+        Comparator<Item> idComparator = Comparator.comparing(Item::getID);
+        list.sort(idComparator);
+
+        CustomerDatabase.deleteAllCustomers();
+        for (Customer c: customersList){
+            CustomerDatabase.addRecord("src/main/resources/com/example/data/customer.txt",c);
+        }
 
         rentTable.setItems(FXCollections.observableArrayList(rentedItem));// Refresh the rentTable
         table.setItems(FXCollections.observableArrayList(list));
         rentTable.refresh();
         table.refresh();
-        stockLabel.setVisible(false);
-        rentedLabel.setVisible(true);
+
     }
-
-
-
     public void delete(Item item) {
         // Remove the selected item from the table
         table.getItems().remove(item);

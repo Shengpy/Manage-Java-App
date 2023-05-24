@@ -79,8 +79,15 @@ public class AdminCustomerController implements Initializable {
         });
     }
 
-    public void exit(){
-        System.exit(0);
+    public void exit(ActionEvent e) throws IOException {
+        Stage stage=(Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
+        AnchorPane root = loader.load();
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Rental App");
+        stage.show();
     }
     public void sortAlpha() {
         ObservableList<Customer> alphaList = table.getItems();

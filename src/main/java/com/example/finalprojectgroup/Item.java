@@ -10,6 +10,7 @@ public abstract class Item implements java.io.Serializable {
     private String ID, title, rentType, loanType, rentalStatus;
     private static int trackingId;
     private int year;
+    private String genre;
 
     // Contructor for Item
     // year to make ID,
@@ -88,14 +89,10 @@ public abstract class Item implements java.io.Serializable {
     }
 
     public void setNumberOfCopies(int numberOfCopies) {
-        if (numberOfCopies >= 0) {
             this.rentType = rentType;
             this.numberOfCopies = numberOfCopies;
             setRentalStatus();
-        } else{
-            throw new IllegalArgumentException("--- OUT OF STOCK! TELL ADMIN TO UPDATE ---");
         }
-    }
 
     public void setRentalFee(double rentalFee) {
         this.rentalFee = rentalFee;
@@ -124,6 +121,10 @@ public abstract class Item implements java.io.Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getGenre() {
+        return genre;
     }
 
     public static class VideoGame extends Item implements java.io.Serializable {
@@ -174,6 +175,7 @@ public abstract class Item implements java.io.Serializable {
             setNumberOfCopies(item.getNumberOfCopies());
             setRentalFee(item.getRentalFee());
             setIDmanual(item.getID());
+            setGenre(item.getGenre());
         }
 
         public DVD(Integer year, String title, String rentType, String loanType, Integer numberOfCopies, double rentalFee, String genre) {
@@ -214,6 +216,7 @@ public abstract class Item implements java.io.Serializable {
             setNumberOfCopies(item.getNumberOfCopies());
             setRentalFee(item.getRentalFee());
             setIDmanual(item.getID());
+            setGenre(item.getGenre());
         }
 
         public OldMovieRecord(Integer year, String title, String rentType, String loanType, Integer numberOfCopies, double rentalFee, String genre) {

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="424.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalprojectgroup.CustomerInfoController">
+   <children>
+      <Button fx:id="exitButton" layoutX="441.0" layoutY="388.0" mnemonicParsing="false" onAction="#exit" text="LOG OUT" textFill="RED" />
+      <Label fx:id="addNoti" layoutX="319.0" layoutY="426.0" prefHeight="41.0" prefWidth="80.0" text="Item is added! " visible="false" />
+      <Label fx:id="removeNoti" layoutX="379.0" layoutY="414.0" prefHeight="41.0" prefWidth="131.0" text="Item is removed!" visible="false" />
+      <Label fx:id="clearNoti" layoutX="459.0" layoutY="414.0" prefHeight="41.0" prefWidth="131.0" text="All text is cleared!" visible="false" />
+      <Label layoutX="319.0" layoutY="121.0" prefHeight="21.0" prefWidth="66.0" text="ID:" />
+      <Button fx:id="change_pageButton" layoutX="523.0" layoutY="388.0" mnemonicParsing="false" onAction="#change_page" text="CUSTOMER" />
+      <Label alignment="CENTER" layoutX="359.0" layoutY="32.0" prefHeight="51.0" prefWidth="252.0" text="Info Page" textAlignment="CENTER">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Label layoutX="319.0" layoutY="155.0" prefHeight="21.0" prefWidth="109.0" text="Name:" />
+      <Label layoutX="319.0" layoutY="192.0" text="Address:" />
+      <Label layoutX="319.0" layoutY="346.0" text="Account type:" />
+      <Label layoutX="319.0" layoutY="233.0" prefHeight="21.0" prefWidth="109.0" text="Phone number:" />
+      <Label layoutX="319.0" layoutY="269.0" text="Username:" />
+      <Label layoutX="319.0" layoutY="307.0" text="Password:" />
+
+      <Label fx:id="NameText" layoutX="429.0" layoutY="150.0" />
+      <Label fx:id="AddrText" layoutX="429.0" layoutY="187.0" />
+      <Label fx:id="PhoneText" layoutX="429.0" layoutY="228.0" />
+      <Label fx:id="UsernameText" layoutX="429.0" layoutY="265.0" />
+      <Label fx:id="PasswordText" layoutX="429.0" layoutY="302.0" />
+
+      <Label alignment="CENTER" layoutX="341.0" layoutY="84.0" prefHeight="26.0" prefWidth="265.0" text="Customer Information here">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="IdText" layoutX="429.0" layoutY="121.0" prefHeight="21.0" prefWidth="187.0" />
+      <ImageView fitHeight="278.0" fitWidth="200.0" layoutX="46.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../data/RMIT-University-logo.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="typeLabel" layoutX="429.0" layoutY="346.0" />
+   </children>
+</AnchorPane>

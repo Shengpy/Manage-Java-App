@@ -68,6 +68,9 @@ public class ItemDatabase {
         }
     }
 
+    //use this method while removing item so that the deleted ID can be store in a text file,
+    //the next adding will check the file and use the deleted one
+    //if the file is empty, keep following the format itemList.size()+1
     public static void saveID(Item item){
         String ID = item.getID();
         String extractedPart = ID.substring(1, 4);
@@ -82,7 +85,9 @@ public class ItemDatabase {
         }
     }
 
-
+    //this method is put directly into the Item class where we create the ID
+    //It will check if the file is empty or not, return null
+    //IF it's not empty return a number and the method in Item class will take over
     public static Integer replaceID() {
         ArrayList<String> idList = new ArrayList<>();
         String line = null;
@@ -101,7 +106,7 @@ public class ItemDatabase {
             ex.printStackTrace();
         }
 
-        if (idList.isEmpty()) {
+        if (idList.isEmpty()||(idList.get(0).equals(""))) {
             return null;
         } else {
             try {
@@ -113,6 +118,8 @@ public class ItemDatabase {
         }
     }
 
+    //this method take out and ID and rewrite the rest to make sure there are no data lost
+    //this method also return an ID index for the replaceID method to return
     public static String reSaveId(ArrayList<String> idList) {
         if (idList.isEmpty()) {
             return null;

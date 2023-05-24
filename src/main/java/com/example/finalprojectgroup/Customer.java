@@ -9,6 +9,18 @@ public class Customer implements java.io.Serializable {
     public int Number_pay=0;
     public int Max_rent=0;
     public int promote_condition=0;
+
+    int rewardPoints=0;
+    int rent_free=0;
+
+    public int getRewardPoints() {
+        return rewardPoints;
+    }
+
+    public int getRent_free() {
+        return rent_free;
+    }
+
     private static int trackingId;
     public Customer(String ID, String name, String address, String phone, String username, String password) {
         if (!isValidID(ID)) {
@@ -66,6 +78,10 @@ public class Customer implements java.io.Serializable {
     }
     public static boolean isValidID(String ID) {return ID.matches("^C\\d{3}$");}
     public int addRental(Item rental){return 1;}
+    public int removeRental(Item rental){return 1;}
+    public void setNumber_pay(int number_pay) {
+        this.Number_pay = number_pay;
+    }
 }
 class GuestAccount extends Customer {
 
@@ -82,30 +98,40 @@ class GuestAccount extends Customer {
         SetType("Guest");
     }
     public int addRental(Item rental) {
-        if (getRentals().size() == Max_rent) {
+        for(Item i: getRentals()){
+            if (Objects.equals(i.getID(), rental.getID())) {
+                int checkCopy = i.getNumberOfCopies();
+                if(checkCopy >= 1){
+                    return 0;
+                } else{
+                    i.setNumberOfCopies(i.getNumberOfCopies() + rental.getNumberOfCopies());
+                    return 1;
+                }
+
+            }
+        }
+        if (getRentals().size() == Max_rent){
             return 0;
             //System.out.println("Error: Guest account can only rent 1-day items.");
         }
         if (Objects.equals(rental.getLoanType(), "2-day")){
             return -1;
         }
-        for(Item i: getRentals()){
-            if (Objects.equals(i.getID(), rental.getID())) {
-                i.setNumberOfCopies(i.getNumberOfCopies() + rental.getNumberOfCopies());
-                return 1;
-            }
-        }
         getRentals().add(rental);
         return 1;
     }
     //__2 promote ___ 0 false ____ 1 true
-    public int remoteRental(Item rental){
+    @Override
+    public int removeRental(Item rental){
         for (Item r : getRentals())
-            if (Objects.equals(rental.getTitle(), r.getTitle())){
-                getRentals().remove(r);
+            if (Objects.equals(rental.getID(), r.getID())){
+                r.setNumberOfCopies(r.getNumberOfCopies()-1);
                 Number_pay+=1;
+                if (r.getNumberOfCopies()==0){
+                    getRentals().remove(r);
+                }
                 //promote account
-                if(Number_pay>promote_condition){
+                if(Number_pay > promote_condition){
                     return 2;
                 }
                 return 1;
@@ -117,16 +143,21 @@ class RegularAccount extends GuestAccount {
     public RegularAccount(String ID, String name, String address, String phone, String username, String password) {
         super(ID, name, address, phone, username, password);
         promote_condition=5;
+        setNumber_pay(0);
         SetType("Regular");
     }
     public RegularAccount(Customer acc){
         super(acc.getID(),acc.getName(),acc.getAddress(),acc.getPhone(),acc.getUsername(),acc.getPassword());
+        SetRentals(acc.getRentals());
+        promote_condition=5;
+        setNumber_pay(0);
         SetType("Regular");
     }
     public RegularAccount(GuestAccount acc){
         super(acc.getID(),acc.getName(),acc.getAddress(),acc.getPhone(),acc.getUsername(),acc.getPassword());
         SetRentals(acc.getRentals());
         promote_condition=5;
+        setNumber_pay(0);
         SetType("Regular");
     }
     @Override
@@ -142,8 +173,7 @@ class RegularAccount extends GuestAccount {
     }
 }
 class VIPAccount extends RegularAccount {
-    private int rewardPoints=0;
-    private int rent_free=0;
+
     public VIPAccount(String ID, String name, String address, String phone, String username, String password) {
         super(ID, name, address, phone, username, password);
         SetType("VIP");
@@ -155,6 +185,8 @@ class VIPAccount extends RegularAccount {
     }
     public VIPAccount(Customer acc){
         super(acc.getID(),acc.getName(),acc.getAddress(),acc.getPhone(),acc.getUsername(),acc.getPassword());
+        SetRentals(acc.getRentals());
+        setNumber_pay(0);
         SetType("VIP");
     }
     public int addRental(Item rental) {
